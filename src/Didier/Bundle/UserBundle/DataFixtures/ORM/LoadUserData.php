@@ -43,7 +43,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         foreach ($users as $user) {
             $manager->persist($user);
-            $this->setReference('user-'.$user->getId(), $user);
+            $this->setReference('user-'.$user->getUsername(), $user);
         }
 
         $manager->flush();

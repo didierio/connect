@@ -59,6 +59,6 @@ fos_oauth_server:
     refresh_token_class: Didier\Bundle\OAuth2ServerBundle\Entity\RefreshToken
     auth_code_class:     Didier\Bundle\OAuth2ServerBundle\Entity\AuthCode
     service:
-        client_manager: didier_oauth2_server.auth_code_manager.default
+        client_manager: didier_oauth2_server.client_manager.default
         options:
             supported_scopes: email

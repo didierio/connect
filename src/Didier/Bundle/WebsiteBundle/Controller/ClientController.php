@@ -1,6 +1,6 @@
 <?php
 
-namespace Didier\Bundle\OAuth2ServerBundle\Controller;
+namespace Didier\Bundle\WebsiteBundle\Controller;
 
 use Didier\Bundle\OAuth2ServerBundle\Entity\Client;
 use Didier\Bundle\OAuth2ServerBundle\Form\Type\ClientType;
@@ -11,30 +11,29 @@ use Symfony\Component\HttpFoundation\Request;
 class ClientController extends Controller
 {
     /**
-     * @Route("/oauth/v2/clients", name="didier_oauth2_server_client_list")
+     * @Route("/clients", name="didier_website_client_list")
      */
     public function listAction()
     {
-        $accessTokens = $this->get('doctrine')->getRepository('DidierOAuth2ServerBundle:AccessToken')->findAll();
-        $authCodes = $this->get('doctrine')->getRepository('DidierOAuth2ServerBundle:AuthCode')->findAll();
-        $clients = $this->get('doctrine')->getRepository('DidierOAuth2ServerBundle:Client')->findAll();
-        $refreshTokens = $this->get('doctrine')->getRepository('DidierOAuth2ServerBundle:AuthCode')->findAll();
+        $user = $this->get('security.context')->getToken()->getUser();
+        $clients = $this->get('doctrine')->getRepository('DidierOAuth2ServerBundle:Client')->findByUser($user);
 
-        return $this->render('DidierOAuth2ServerBundle:Client:list.html.twig', array(
-            'accessTokens' => $accessTokens,
-            'authCodes' => $authCodes,
+        return $this->render('DidierWebsiteBundle:Client:list.html.twig', array(
+            'accessTokens' => array(),
+            'authCodes' => array(),
             'clients' => $clients,
-            'refreshTokens' => $refreshTokens,
+            'refreshTokens' => array(),
             'now' => new \DateTime(),
         ));
     }
 
     /**
-     * @Route("/oauth/v2/clients/create", name="didier_oauth2_server_client_create")
+     * @Route("/clients/create", name="didier_website_client_create")
      */
     public function createAction(Request $request)
     {
         $client = new Client();
+        $client->setUser($this->get('security.context')->getToken()->getUser());
         $form = $this->createForm(new ClientType(), $client);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
@@ -42,16 +41,16 @@ class ClientController extends Controller
             $em->persist($client);
             $em->flush($client);
 
-            return $this->redirect($this->get('router')->generate('didier_oauth2_server_client_list'));
+            return $this->redirect($this->get('router')->generate('didier_website_client_list'));
         }
 
-        return $this->render('DidierOAuth2ServerBundle:Client:create.html.twig', array(
+        return $this->render('DidierWebsiteBundle:Client:create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
 
     /**
-     * @Route("/oauth/v2/clients/{id}/edit", name="didier_oauth2_server_client_edit")
+     * @Route("/clients/{id}/edit", name="didier_website_client_edit")
      */
     public function editAction(Request $request, $id)
     {
@@ -67,10 +66,10 @@ class ClientController extends Controller
             $em = $this->get('doctrine')->getManager();
             $em->flush($client);
 
-            return $this->redirect($this->get('router')->generate('didier_oauth2_server_client_list'));
+            return $this->redirect($this->get('router')->generate('didier_website_client_list'));
         }
 
-        return $this->render('DidierOAuth2ServerBundle:Client:edit.html.twig', array(
+        return $this->render('DidierWebsiteBundle:Client:edit.html.twig', array(
             'client' => $client,
             'form' => $form->createView(),
         ));
@@ -92,10 +91,10 @@ class ClientController extends Controller
         if ($error) {
             $error = $error->getMessage(); // WARNING! Symfony source code identifies this line as a potential security threat.
         }
-      
+
         $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
 
-        return $this->render('DidierOAuth2ServerBundle:Security:login.html.twig', array(
+        return $this->render('DidierWebsiteBundle:Security:login.html.twig', array(
             'last_username' => $lastUsername,
             'error'         => $error,
         ));

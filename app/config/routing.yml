@@ -1,8 +1,14 @@
-fos_oauth_server_token:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
-
-fos_oauth_server_authorize:
-    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
-
 biclo_oauth_2_server:
     resource: "@DidierOAuth2ServerBundle/Resources/config/routing.yml"
+
+didier_user:
+    resource: "@DidierUserBundle/Resources/config/routing.yml"
+
+didier_website:
+    resource: "@DidierWebsiteBundle/Resources/config/routing.yml"
+
+didier_website_login:
+    pattern: /login
+
+didier_website_logout:
+    pattern: /logout

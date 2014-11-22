@@ -1,0 +1,3 @@
+didier_website_security:
+  resource: "@DidierUserBundle/Controller/SecurityController.php"
+  type: annotation

@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-    <div class="form">  
-        <form id="login" class="vertical" action="{{ path('didier_oauth2_server_security_login_check') }}" method="post">  
+    <div class="form">
+        <form id="login" class="vertical" action="{{ path('didier_user_security_login_check') }}" method="post">
             <div class="form_title">
                 OAuth Authorization
             </div>
@@ -9,7 +9,7 @@
                 <div class='form_error'>{{ error }}</div>
             {% endif %}
             <div>
-                <a href="{{ path('didier_oauth2_server_security_register') }}">register</a>
+                <a href="{{ path('didier_user_security_register') }}">register</a>
             </div>
             <div class="form_item">
                 <div class="form_label"><label for="username">Username</label>:</div>

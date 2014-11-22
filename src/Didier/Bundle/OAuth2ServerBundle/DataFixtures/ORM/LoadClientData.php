@@ -31,9 +31,10 @@ class LoadClientData extends AbstractFixture implements OrderedFixtureInterface,
      */
     public function load(ObjectManager $manager)
     {
-        $clientManager = $this->container->get('fos_oauth_server.client_manager.default');
+        $clientManager = $this->container->get('didier_oauth2_server.client_manager.default');
 
         $client = $clientManager->createClient();
+        $client->setUser($this->getReference('user-julien'));
         $client->setName('www');
         $client->setRedirectUris(array('http://connect.didier.io'));
         $client->setAllowedGrantTypes(array('token', 'authorization_code'));
@@ -47,13 +48,5 @@ class LoadClientData extends AbstractFixture implements OrderedFixtureInterface,
     public function getOrder()
     {
         return 2;
-    }
-
-    protected function setPassword(User $user, $password)
-    {
-        $factory = $this->container->get('security.encoder_factory');
-
-        $encoder = $factory->getEncoder($user);
-        $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
     }
 }

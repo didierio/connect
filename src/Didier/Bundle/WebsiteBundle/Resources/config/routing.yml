@@ -1,0 +1,13 @@
+didier_website_access_token:
+    resource: "@DidierWebsiteBundle/Controller/AccessTokenController.php"
+    type: annotation
+
+didier_website_client:
+    resource: "@DidierWebsiteBundle/Controller/ClientController.php"
+    type: annotation
+
+didier_website_home:
+    pattern: /
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template: DidierWebsiteBundle:Default:home.html.twig

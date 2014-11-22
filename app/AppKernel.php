@@ -20,6 +20,7 @@ class AppKernel extends Kernel
 
             new Didier\Bundle\OAuth2ServerBundle\DidierOAuth2ServerBundle(),
             new Didier\Bundle\UserBundle\DidierUserBundle(),
+            new Didier\Bundle\WebsiteBundle\DidierWebsiteBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

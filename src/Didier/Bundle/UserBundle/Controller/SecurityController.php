@@ -1,9 +1,10 @@
 <?php
 
-namespace Didier\Bundle\OAuth2ServerBundle\Controller;
+namespace Didier\Bundle\UserBundle\Controller;
 
 use Didier\Bundle\UserBundle\Entity\User;
 use Didier\Bundle\UserBundle\Form\Type\RegistrationType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,9 @@ use Symfony\Component\Security\Core\SecurityContext;
 
 class SecurityController extends Controller
 {
+    /**
+     * @Route("/register", name="didier_user_security_register")
+     */
     public function registerAction(Request $request)
     {
         $user = new User();
@@ -25,14 +29,17 @@ class SecurityController extends Controller
             $em->persist($user);
             $em->flush($user);
 
-            return $this->redirect($this->get('router')->generate('didier_oauth2_server_security_login'));
+            return $this->redirect($this->get('router')->generate('didier_user_security_login'));
         }
 
-        return $this->render('DidierOAuth2ServerBundle:Security:register.html.twig', array(
+        return $this->render('DidierUserBundle:Security:register.html.twig', array(
             'form' => $form->createView(),
         ));
     }
 
+    /**
+     * @Route("/login", name="didier_user_security_login")
+     */
     public function loginAction(Request $request)
     {
         $session = $request->getSession();
@@ -49,38 +56,20 @@ class SecurityController extends Controller
         if ($error) {
             $error = $error->getMessage(); // WARNING! Symfony source code identifies this line as a potential security threat.
         }
-      
+
         $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
 
-        return $this->render('DidierOAuth2ServerBundle:Security:login.html.twig', array(
+        return $this->render('DidierUserBundle:Security:login.html.twig', array(
             'last_username' => $lastUsername,
             'error'         => $error,
         ));
     }
 
+    /**
+     * @Route("/login-check", name="didier_user_security_login_check")
+     */
     public function loginCheckAction(Request $request)
     {
         throw $this->createNotFoundException();
-    }
-
-    public function revokeAction(Request $request)
-    {
-        $token = $request->query->get('token');
-        if (null === $token) {
-            throw $this->createAccessDeniedException('No token found in the request query parameters');
-        }
-
-        $doctrine = $this->get('doctrine');
-        $accessToken = $doctrine->getRepository('DidierOAuth2ServerBundle:AccessToken')->findOneByToken($token);
-
-        if (null === $accessToken) {
-            throw $this->createNotFoundException('Token not found');
-        }
-
-        $em = $doctrine->getManager();
-        $em->remove($accessToken);
-        $em->flush($accessToken);
-
-        return new JsonResponse(array('ok'));
     }
 }

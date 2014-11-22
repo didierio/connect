@@ -1,0 +1,32 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    <h1>Clients</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>name</td>
+                <td>randomId</td>
+                <td>redirectUris</td>
+                <td>secret</td>
+                <td>allowedGrantTypes</td>
+            </tr>
+        </thead>
+        {% for client in clients %}
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="{{ path('didier_website_client_edit', {id: client.id}) }}">{{ client.id }}</a>
+                    </td>
+                    <td>{{ client.name }}</td>
+                    <td>{{ client.randomId }}</td>
+                    <td>{{ client.redirectUris|join(', ') }}</td>
+                    <td>{{ client.secret }}</td>
+                    <td>{{ client.allowedGrantTypes|join(', ') }}</td>
+                </tr>
+            </tbody>
+        {% endfor %}
+    </table>
+    <a href="{{ path('didier_website_client_create') }}">Create</a>
+{% endblock %}

@@ -11,7 +11,9 @@ security:
 
     providers:
         biclo_user:
-            entity: { class: Didier\Bundle\UserBundle\Entity\User, property: email }
+            entity:
+                class: Didier\Bundle\UserBundle\Entity\User
+                property: email
 
     firewalls:
         dev:
@@ -19,22 +21,25 @@ security:
             security: false
 
         oauth_token:
-            pattern:    ^/oauth/v2/token
-            security:   false
+            pattern:  ^/oauth/v2/token
+            security: false
 
         api:
-            pattern: ^/api
+            pattern:   ^/api
             fos_oauth: true
             stateless: true
 
-        oauth_authorize:
-            pattern:    ^/oauth/v2/auth
+        website:
+            pattern:    ^/
             form_login:
-                provider: biclo_user
-                check_path: /oauth/v2/auth_login_check
-                login_path: /oauth/v2/auth_login
+                provider:   biclo_user
+                login_path: didier_website_login
+                check_path: /login-check
             anonymous: true
+            logout:
+                path: didier_website_logout
 
     access_control:
-        - { path: ^/oauth/v2/auth_login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/oauth/v2/auth, roles: IS_AUTHENTICATED_FULLY }

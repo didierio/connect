@@ -4,6 +4,7 @@ namespace Didier\Bundle\OAuth2ServerBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\Client as BaseClient;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity()
@@ -45,10 +46,10 @@ class Client extends BaseClient
      */
     protected $allowedGrantTypes;
 
-    public function __construct()  
-    {  
-        parent::__construct();  
-    }  
+    /**
+     * @ORM\ManyToOne(targetEntity="Didier\Bundle\UserBundle\Entity\User")
+     */
+    protected $user;
 
     public function getName()  
     {  
@@ -58,6 +59,16 @@ class Client extends BaseClient
     public function setName($name)  
     {  
         $this->name = $name;  
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user)
+    {
+        $this->user = $user;
     }
 
     public function getRedirectUri()

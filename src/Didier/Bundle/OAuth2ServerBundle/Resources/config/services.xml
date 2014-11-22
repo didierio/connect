@@ -5,13 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="didier_oauth2_server.auth_code_manager.default.class">Didier\Bundle\OAuth2ServerBundle\Entity\ClientManager</parameter>
+        <parameter key="didier_oauth2_server.client_manager.default.class">Didier\Bundle\OAuth2ServerBundle\Entity\ClientManager</parameter>
     </parameters>
 
     <services>
         <service
-            id="didier_oauth2_server.auth_code_manager.default"
-            class="%didier_oauth2_server.auth_code_manager.default.class%"
+            id="didier_oauth2_server.client_manager.default"
+            class="%didier_oauth2_server.client_manager.default.class%"
             parent="fos_oauth_server.client_manager.default"
         />
     </services>

@@ -1,11 +1,12 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-    <div class="form">  
-        <form id="login" class="vertical" action="{{ path('didier_oauth2_server_client_edit', {id: client.id}) }}" method="POST">  
-            <div class="form_title">
-                Edit client {{ client.name }}
-            </div>
+    <h1>
+        Edit client {{ client.name }}
+    </h1>
+
+    <div class="form">
+        <form id="login" class="vertical" action="{{ path('didier_website_client_edit', {id: client.id}) }}" method="POST">
             {% if null != error|default(null) %}
                 <div class='form_error'>{{ error }}</div>
             {% endif %}
@@ -17,4 +18,5 @@
             </div>
         </form>
     </div>
+    <a href="{{ path('didier_website_client_list') }}">Back to list</a>
 {% endblock %}
