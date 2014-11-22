@@ -1,11 +1,11 @@
-Biclo data
-==========
+OAuth2 server
+=============
 
 Requirements
 ------------
 
- * postgresql-9.1
- * php5-pgsql
+ * mysql-server
+ * php5-mysql
 
 Installation
 ------------
