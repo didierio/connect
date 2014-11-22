@@ -49,23 +49,16 @@ doctrine:
         entity_managers:
             default:
                 mappings:
-                    BicloOAuth2ServerBundle: ~
-                    BicloUserBundle: ~
-
-# Swiftmailer Configuration
-swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
+                    DidierOAuth2ServerBundle: ~
+                    DidierUserBundle: ~
 
 fos_oauth_server:
     db_driver: orm       # Driver availables: orm, mongodb, or propel
-    client_class:        Biclo\Bundle\OAuth2ServerBundle\Entity\Client
-    access_token_class:  Biclo\Bundle\OAuth2ServerBundle\Entity\AccessToken
-    refresh_token_class: Biclo\Bundle\OAuth2ServerBundle\Entity\RefreshToken
-    auth_code_class:     Biclo\Bundle\OAuth2ServerBundle\Entity\AuthCode
+    client_class:        Didier\Bundle\OAuth2ServerBundle\Entity\Client
+    access_token_class:  Didier\Bundle\OAuth2ServerBundle\Entity\AccessToken
+    refresh_token_class: Didier\Bundle\OAuth2ServerBundle\Entity\RefreshToken
+    auth_code_class:     Didier\Bundle\OAuth2ServerBundle\Entity\AuthCode
     service:
+        client_manager: didier_oauth2_server.auth_code_manager.default
         options:
             supported_scopes: email

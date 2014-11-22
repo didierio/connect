@@ -1,17 +1,17 @@
 security:
     encoders:
-        Biclo\Bundle\UserBundle\Entity\User:
+        Didier\Bundle\UserBundle\Entity\User:
             algorithm:        sha512
             encode-as-base64: true
             iterations:       5
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN]
 
     providers:
         biclo_user:
-            entity: { class: Biclo\Bundle\UserBundle\Entity\User, property: email }
+            entity: { class: Didier\Bundle\UserBundle\Entity\User, property: email }
 
     firewalls:
         dev:

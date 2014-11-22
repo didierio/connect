@@ -1,0 +1,33 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    {% if null == client %}
+        <p>
+            <a href="{{ path('didier_oauth2_server_default_create_client') }}">
+                create client
+            </a>
+        </p>
+    {% else %}
+        {% set redirect_uri = route|default(app.request.uri) %}
+        <p>
+            <a href="{{ path('fos_oauth_server_authorize', {
+                client_id: client.id~'_'~client.randomId,
+                response_type: 'code',
+                redirect_uri: redirect_uri
+            }) }}">
+                authorize
+            </a>
+        </p>
+
+        {% if app.request.query.has('code') %}
+            <p>
+                <a href="{{ path('fos_oauth_server_token', {
+                    client_id: client.id~'_'~client.randomId,
+                    client_secret: client.secret,
+                    grant_type: 'authorization_code',
+                    redirect_uri: redirect_uri,
+                    code: app.request.query.get('code')
+                }) }}">token</a>
+            </p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="didier_oauth2_server.auth_code_manager.default.class">Didier\Bundle\OAuth2ServerBundle\Entity\ClientManager</parameter>
+    </parameters>
+
+    <services>
+        <service
+            id="didier_oauth2_server.auth_code_manager.default"
+            class="%didier_oauth2_server.auth_code_manager.default.class%"
+            parent="fos_oauth_server.client_manager.default"
+        />
+    </services>
+</container>

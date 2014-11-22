@@ -5,4 +5,4 @@ fos_oauth_server_authorize:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
 
 biclo_oauth_2_server:
-    resource: "@BicloOAuth2ServerBundle/Resources/config/routing.yml"
+    resource: "@DidierOAuth2ServerBundle/Resources/config/routing.yml"
