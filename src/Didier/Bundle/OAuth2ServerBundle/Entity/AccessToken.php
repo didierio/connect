@@ -37,6 +37,11 @@ class AccessToken extends BaseAccessToken
     protected $token;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $description;
+
+    /**
      * @ORM\Column(name="expires_at", type="integer", nullable=true)
      */
     protected $expiresAt;
@@ -45,4 +50,14 @@ class AccessToken extends BaseAccessToken
      * @ORM\Column(type="string", nullable=true)
      */
     protected $scope;
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
 }

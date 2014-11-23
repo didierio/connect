@@ -18,5 +18,8 @@
             </div>
         </form>
     </div>
+    <a href="{{ path('didier_website_client_create_token', { id: client.id }) }}">
+        Create token
+    </a>
     <a href="{{ path('didier_website_client_list') }}">Back to list</a>
 {% endblock %}

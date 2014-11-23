@@ -2,18 +2,16 @@
 
 namespace Didier\Bundle\WebsiteBundle\Controller;
 
-use Didier\Bundle\UserBundle\Entity\User;
-use Didier\Bundle\UserBundle\Form\Type\RegistrationType;
+use Didier\Bundle\OAuth2ServerBundle\Entity\AccessToken;
+use Didier\Bundle\OAuth2ServerBundle\Form\Type\AccessTokenType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContext;
 
 class AccessTokenController extends Controller
 {
     /**
-     * @Route("/access_tokens", name="didier_website_access_token_list")
+     * @Route("/access-tokens", name="didier_website_access_token_list")
      */
     public function listAction()
     {
@@ -26,7 +24,33 @@ class AccessTokenController extends Controller
     }
 
     /**
-     * @Route("/access_tokens/{id}/revoke", name="didier_website_access_token_revoke")
+     * @Route("/access-tokens/{id}/edit", name="didier_website_access_token_edit")
+     */
+    public function editAction(Request $request, $id)
+    {
+        $manager = $this->get('fos_oauth_server.access_token_manager.default');
+        $accessToken = $manager->findTokenBy(['id' => $id]);
+
+        if (null === $accessToken) {
+            throw $this->createNotFoundException(sprintf('AccessToken #%d not found', $id));
+        }
+
+        $form = $this->createForm(new AccessTokenType(), $accessToken);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $manager->updateToken($accessToken);
+
+            return $this->redirect($this->get('router')->generate('didier_website_access_token_list'));
+        }
+
+        return $this->render('DidierWebsiteBundle:AccessToken:edit.html.twig', array(
+            'form' => $form->createView(),
+            'accessToken' => $accessToken,
+        ));
+    }
+
+    /**
+     * @Route("/access-tokens/{id}/revoke", name="didier_website_access_token_revoke")
      */
     public function revokeAction(Request $request, $id)
     {

@@ -7,9 +7,9 @@
             <tr>
                 <td>#</td>
                 <td>name</td>
-                <td>randomId</td>
-                <td>redirectUris</td>
+                <td>id</td>
                 <td>secret</td>
+                <td>redirectUris</td>
                 <td>allowedGrantTypes</td>
             </tr>
         </thead>
@@ -21,12 +21,13 @@
                     </td>
                     <td>{{ client.name }}</td>
                     <td>{{ client.randomId }}</td>
-                    <td>{{ client.redirectUris|join(', ') }}</td>
                     <td>{{ client.secret }}</td>
+                    <td>{{ client.redirectUris|join(', ') }}</td>
                     <td>{{ client.allowedGrantTypes|join(', ') }}</td>
                 </tr>
             </tbody>
         {% endfor %}
     </table>
     <a href="{{ path('didier_website_client_create') }}">Create</a>
+    <a href="{{ path('didier_website_home') }}">Home</a>
 {% endblock %}

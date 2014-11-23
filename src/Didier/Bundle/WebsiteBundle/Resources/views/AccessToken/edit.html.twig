@@ -2,11 +2,11 @@
 
 {% block body %}
     <h1>
-        Create client
+        Edit access token #{{ accessToken.id }}
     </h1>
 
     <div class="form">
-        <form class="vertical" action="{{ path('didier_website_client_create') }}" method="POST">
+        <form class="vertical" action="{{ path('didier_website_access_token_edit', {id: accessToken.id}) }}" method="POST">
             {{ form_rest(form) }}
 
             <div class="form_button">
@@ -14,4 +14,5 @@
             </div>
         </form>
     </div>
+    <a href="{{ path('didier_website_access_token_list') }}">Back to list</a>
 {% endblock %}

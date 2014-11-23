@@ -25,6 +25,11 @@
                     <td>{{ now.format('U') > accessToken.expiresAt ? 'yes' : 'no' }}
                     <td>{{ accessToken.scope }}</td>
                     <td>
+                        <a href="{{ path('didier_website_access_token_edit', {
+                            id: accessToken.id
+                        }) }}"/>
+                            edit
+                        </a>
                         <a href="{{ path('didier_website_access_token_revoke', {
                             id: accessToken.id
                         }) }}"/>
@@ -35,4 +40,5 @@
             </tbody>
         {% endfor %}
     </table>
+    <a href="{{ path('didier_website_home') }}">Home</a>
 {% endblock %}

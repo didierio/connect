@@ -51,6 +51,14 @@ class Client extends BaseClient
      */
     protected $user;
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->redirectUris = array();
+        $this->allowedGrantTypes = array();
+    }
+
     public function getName()  
     {  
         return $this->name;  
@@ -83,6 +91,11 @@ class Client extends BaseClient
     public function setRedirectUri($redirectUri)
     {
         $this->redirectUris = [$redirectUri];
+    }
+
+    public function addRedirectUri($redirectUri)
+    {
+        $this->redirectUris[] = $redirectUri;
     }
 
     public function getAllowedGrants()

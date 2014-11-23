@@ -7,15 +7,3 @@ fos_oauth_server_authorize:
 didier_oauth2_server_default_user:
     pattern: /api/me
     defaults: { _controller: "DidierOAuth2ServerBundle:Default:user" }
-
-didier_oauth2_server_default_links:
-    pattern: /links
-    defaults: { _controller: "DidierOAuth2ServerBundle:Default:links" }
-
-didier_oauth2_server_default_create_client:
-    pattern: /links/createClient
-    defaults: { _controller: "DidierOAuth2ServerBundle:Default:createClient" }
-
-didier_oauth2_server_security_revoke:
-    pattern: /oauth/v2/revoke
-    defaults: { _controller: "DidierOAuth2ServerBundle:Security:revoke" }

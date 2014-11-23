@@ -19,7 +19,8 @@
         "sensio/framework-extra-bundle": "~3.0",
         "symfony/assetic-bundle": "~2.5",
         "symfony/monolog-bundle": "~2.5",
-        "friendsofsymfony/oauth-server-bundle": "~1.4"
+        "friendsofsymfony/oauth-server-bundle": "~1.4",
+        "guzzlehttp/guzzle": "~4.0"
     },
     "scripts": {
         "post-install-cmd": [
