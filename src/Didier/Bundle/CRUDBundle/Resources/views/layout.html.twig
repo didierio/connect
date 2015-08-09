@@ -1,0 +1,97 @@
+{% extends "base.html.twig" %}
+
+{% trans_default_domain "crud" %}
+
+{% block title %}
+    {{ 'app.title'|trans }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('components/bootstrap/dist/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/aecfcrud/css/main.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3 sidebar" role="complementary">
+            <div class="brand">
+                <a href="{{ path('crud_index') }}">{{ 'app.title'|trans }}</a>
+            </div>
+
+            <nav>
+                <ul class="nav">
+                    {% for item in crud_menu() %}
+                        <li><a href="{{ path('crud_'~item~'_list') }}" {% if config is defined and item == config.type %}class="active"{% endif %}>{{ ('nav.item.'~item)|trans }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                {% set links = crud_menu_links() %}
+                {% if links is not empty %}
+                    <ul class="nav secondary-nav">
+                        {% for name, link in crud_menu_links() %}
+                            <li><a href="{{ path(link.route) }}">{{ ('nav.item.'~name)|trans }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </nav>
+        </div>
+
+        <div class="col-md-9 crud-wrapper" role="main">
+            <h1>{% block content_title '' %}</h1>
+
+            {% block flash_messages %}
+                {% if app.session.flashbag.has('success') %}
+                    {{ _self.flashMessages(app.session.flashbag.get('success'), 'success') }}
+                {% endif %}
+
+                {% if app.session.flashbag.has('error') %}
+                    {{ _self.flashMessages(app.session.flashbag.get('error'), 'danger') }}
+                {% endif %}
+            {% endblock %}
+
+            <div class="content">
+                {% if config is defined %}
+                    {{ _self.hookTemplate(config, 'pre_show', entity|default(null)) }}
+                {% endif %}
+
+                {% block content '' %}
+
+                {% if config is defined %}
+                    {{ _self.hookTemplate(config, 'post_show', entity|default(null)) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% for javascript in crud_javascripts() %}
+        <script type="text/javascript" src="{{ asset(javascript.path) }}"></script>
+    {% endfor %}
+
+    <script type="text/javascript" src="{{ asset('bundles/aecfcrud/js/crud.js') }}"></script>
+{% endblock %}
+
+{% macro flashmessages(bag, className) %}
+    <div class="row-fluid flashes">
+        <div class="span12">
+            {% for message in bag %}
+                <p class="bg-{{ className }}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro hookTemplate(config, type, data) %}
+    {% set action = app.request.attributes.get('_action') %}
+
+    {% if config.hasTemplate(action, type) %}
+        {% include config.getTemplate(action, type) with { data: data } %}
+    {% endif %}
+{% endmacro %}

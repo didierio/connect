@@ -1,0 +1,20 @@
+didier_crud:
+    objects:
+        client:
+            class: Didier\Bundle\OAuth2ServerBundle\Entity\Client
+            connector: orm
+            actions:
+                list:
+                    fields: [id, name, allowedGrantTypes]
+                    role: ROLE_CLIENT_LIST
+                show:
+                    fields: [id, name, randomId, redirectUris, secret, allowedGrantTypes]
+                    role: ROLE_CLIENT_LIST
+                create:
+                    fields: [name, randomId, redirectUris, secret, allowedGrantTypes]
+                    role: ROLE_CLIENT_CREATE
+                edit:
+                    fields: [name, randomId, redirectUris, secret, allowedGrantTypes]
+                    role: ROLE_CLIENT_EDIT
+                delete:
+                    role: ROLE_CLIENT_DELETE

@@ -1,0 +1,3 @@
+didier_crud:
+    resource: .
+    type: didier_crud

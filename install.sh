@@ -7,22 +7,6 @@ else
   env=$1
 fi
 
-cd "`dirname "$0"`"
-
-if [ ! -f app/config/parameters.yml ]; then
-    cp app/config/parameters.yml.dist app/config/parameters.yml
-fi
-
-if [ ! -f composer.phar ]; then
-    curl -s http://getcomposer.org/installer | php
-fi
-
-echo ">>> Installing vendors"
-php composer.phar install
-
-echo ">>> Removing cache"
-rm -rf app/cache/* app/logs/*
-
 echo ">>> Installing assets"
 ./app/console assets:install --symlink --env=$env
 

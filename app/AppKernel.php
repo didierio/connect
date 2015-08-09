@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
+            new Didier\Bundle\CRUDBundle\DidierCRUDBundle(),
             new Didier\Bundle\OAuth2ServerBundle\DidierOAuth2ServerBundle(),
             new Didier\Bundle\UserBundle\DidierUserBundle(),
             new Didier\Bundle\WebsiteBundle\DidierWebsiteBundle(),

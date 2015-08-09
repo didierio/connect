@@ -2,6 +2,7 @@ imports:
     - { resource: parameters_dist.yml }
     - { resource: parameters.yml, ignore_errors: true }
     - { resource: security.yml }
+    - { resource: crud.yml }
 
 framework:
     secret: %secret%
@@ -49,8 +50,8 @@ doctrine:
         entity_managers:
             default:
                 mappings:
-                    DidierOAuth2ServerBundle: ~
                     DidierUserBundle: ~
+                    DidierOAuth2ServerBundle: ~
 
 fos_oauth_server:
     db_driver: orm       # Driver availables: orm, mongodb, or propel

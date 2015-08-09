@@ -1,10 +1,14 @@
-biclo_oauth_2_server:
+_didier_crud:
+    resource: "@DidierCRUDBundle/Resources/config/routing.yml"
+    prefix: /crud
+
+_biclo_oauth_2_server:
     resource: "@DidierOAuth2ServerBundle/Resources/config/routing.yml"
 
-didier_user:
+_didier_user:
     resource: "@DidierUserBundle/Resources/config/routing.yml"
 
-didier_website:
+_didier_website:
     resource: "@DidierWebsiteBundle/Resources/config/routing.yml"
 
 didier_website_login:
