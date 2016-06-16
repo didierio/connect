@@ -62,3 +62,4 @@ fos_oauth_server:
         client_manager: didier_oauth2_server.client_manager.default
         options:
             supported_scopes: email
+            access_token_lifetime: %access_token_lifetime%

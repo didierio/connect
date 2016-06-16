@@ -8,3 +8,5 @@ parameters:
 
     secret: ThisTokenIsNotSoSecretChangeIt
     locale: en
+
+    access_token_lifetime: 3600
