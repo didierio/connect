@@ -21,8 +21,8 @@ class SecurityController extends Controller
         $form = $this->createForm(new RegistrationType(), $user);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $encoder = $this->get('security.encoder_factory')->getEncoder($user);
-            $password = $encoder->encodePassword($form->get('password')->getData(), $user->getSalt());
+            $encoder = $this->container->get('security.password_encoder');
+            $password = $encoder->encodePassword($user, $form->get('password')->getData());
             $user->setPassword($password);
 
             $em = $this->get('doctrine')->getManager();

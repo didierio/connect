@@ -49,6 +49,7 @@ class User implements UserInterface
 
     public function __construct()
     {
+        $this->salt = md5($this->username.time());
         $this->createdAt = new \DateTime();
     }
 
@@ -70,7 +71,6 @@ class User implements UserInterface
     public function setUsername($username)
     {
         $this->username = $username;
-        $this->salt = md5($this->username.time());
     }
 
     public function getEmail()
