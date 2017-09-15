@@ -2,7 +2,7 @@
     "name": "biclo/profile-website",
     "license": "MIT",
     "type": "project",
-    "description": "Biclo Oauth2 servcer and profile website",
+    "description": "Biclo Oauth2 server and profile website",
     "autoload": {
         "psr-0": { "": "src/" }
     },
