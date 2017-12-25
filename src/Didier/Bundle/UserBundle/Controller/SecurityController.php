@@ -3,7 +3,7 @@
 namespace Didier\Bundle\UserBundle\Controller;
 
 use Didier\Bundle\UserBundle\Entity\User;
-use Didier\Bundle\UserBundle\Form\Type\RegistrationType;
+use Didier\Bundle\UserBundle\Form\Type\ProfileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +22,7 @@ class SecurityController extends Controller
         }
 
         $user = new User();
-        $form = $this->createForm(new RegistrationType(), $user);
+        $form = $this->createForm(new ProfileType(), $user);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $encoder = $this->container->get('security.password_encoder');
@@ -41,6 +41,30 @@ class SecurityController extends Controller
         ));
     }
 
+    /**
+     * @Route("/profile", name="didier_user_security_profile")
+     */
+    public function profileAction(Request $request)
+    {
+        $em = $this->get('doctrine')->getManager();
+        $user = $em->getRepository('Didier\Bundle\UserBundle\Entity\User')->find($this->getUser()->getId());
+
+        $form = $this->createForm(new ProfileType(), $user);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $encoder = $this->container->get('security.password_encoder');
+            $password = $encoder->encodePassword($user, $form->get('password')->getData());
+            $user->setPassword($password);
+
+            $em->flush($user);
+
+            return $this->redirect($this->get('router')->generate('didier_user_security_profile'));
+        }
+
+        return $this->render('DidierUserBundle:Security:profile.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
     /**
      * @Route("/login", name="didier_user_security_login")
      */

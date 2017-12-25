@@ -1,15 +1,15 @@
 {% extends '::base.html.twig' %}
 {% block body %}
     <div class="form">
-        <form id="login" class="vertical" action="{{ path('didier_user_security_register') }}" method="post">
+        <form id="login" class="vertical" action="{{ path('didier_user_security_profile') }}" method="post">
             <div class="form_title">
-                Register
+                Profile
             </div>
 
             {{ form_rest(form) }}
 
             <div class="form_button">
-                <input type="submit" id="_submit" name="_submit" value="Register" />
+                <input type="submit" id="_submit" name="_submit" value="Save" />
             </div>
         </form>
     </div>
