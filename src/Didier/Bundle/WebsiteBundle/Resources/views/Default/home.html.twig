@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-    <h1>Hello {{ app.user.username }}</h1>
+    <h1>Hello <a href="{{ path('didier_user_security_profile') }}">{{ app.user.username }}</a></h1>
 
     <a href="{{ path('didier_website_client_list') }}">Clients</a>
     <a href="{{ path('didier_website_access_token_list') }}">Access tokens</a>
