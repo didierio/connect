@@ -10,3 +10,4 @@ parameters:
     locale: en
 
     access_token_lifetime: 3600
+    enable_registration: false

@@ -17,6 +17,10 @@ class SecurityController extends Controller
      */
     public function registerAction(Request $request)
     {
+        if (false === $this->getContainer()->getParameter('enable_registration', false)) {
+            return $this->createNotFoundException();
+        }
+
         $user = new User();
         $form = $this->createForm(new RegistrationType(), $user);
 
