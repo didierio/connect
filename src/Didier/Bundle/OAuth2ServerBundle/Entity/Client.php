@@ -98,6 +98,17 @@ class Client extends BaseClient
         $this->redirectUris[] = $redirectUri;
     }
 
+    public function removeRedirectUri($expectedUri)
+    {
+        foreach ($this->redirectUris as $key => $redirectUri) {
+            if ($expectedUri !== $redirectUri) {
+                continue;
+            }
+
+            unset($this->redirectUris[$key]);
+        }
+    }
+
     public function getAllowedGrants()
     {
         return implode(', ', $this->allowedGrantTypes);

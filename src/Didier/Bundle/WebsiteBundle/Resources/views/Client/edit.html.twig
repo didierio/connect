@@ -1,25 +1,24 @@
-{% extends '::base.html.twig' %}
+{% extends '@DidierWebsite/Client/layout.html.twig' %}
 
-{% block body %}
-    <h1>
-        Edit client {{ client.name }}
-    </h1>
+{% form_theme form 'form/backoffice_layout.html.twig' %}
 
-    <div class="form">
-        <form id="login" class="vertical" action="{{ path('didier_website_client_edit', {id: client.id}) }}" method="POST">
-            {% if null != error|default(null) %}
-                <div class='form_error'>{{ error }}</div>
-            {% endif %}
+{% block title %}
+    {{ parent() }}
+    <span class="mdl-color-text--grey-300">/</span>
+    {{ client.name }}
+{% endblock %}
 
-            {{ form_rest(form) }}
+{% block content %}
+    <div class="mdl-cell mdl-cell--12-col">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title mdl-card--expand mdl-color--white">
+                <form action="{{ path('didier_website_client_create') }}" method="POST">
+                    {{ form_rest(form) }}
 
-            <div class="form_button">
-                <input type="submit" id="_submit" name="_submit" value="Edit" />
+                    <input type="submit" id="_submit" name="_submit" class="mdl-button mdl-js-button mdl-js-ripple-effect" value="Save" />
+                    <a href="{{ path('didier_website_client_show', {id: client.id}) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">Cancel</a>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
-    <a href="{{ path('didier_website_client_create_token', { id: client.id }) }}">
-        Create token
-    </a>
-    <a href="{{ path('didier_website_client_list') }}">Back to list</a>
 {% endblock %}

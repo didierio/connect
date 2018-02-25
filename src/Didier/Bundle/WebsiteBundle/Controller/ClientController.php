@@ -44,11 +44,29 @@ class ClientController extends Controller
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $clientManager->updateClient($client);
 
-            return $this->redirect($this->get('router')->generate('didier_website_client_list'));
+            $this->addFlash('success', sprintf('Client "%s" saved', $client->getName()));
+
+            return $this->redirect($this->get('router')->generate('didier_website_client_show', ['id' => $client->getId()]));
         }
 
         return $this->render('DidierWebsiteBundle:Client:create.html.twig', array(
             'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/clients/{id}", name="didier_website_client_show")
+     */
+    public function showAction($id)
+    {
+        $client = $this->get('doctrine')->getRepository('DidierOAuth2ServerBundle:Client')->find($id);
+
+        if (null === $client) {
+            throw $this->createNotFoundException(sprintf('Client #%d not found', $id));
+        }
+
+        return $this->render('DidierWebsiteBundle:Client:show.html.twig', array(
+            'client' => $client,
         ));
     }
 
@@ -69,7 +87,9 @@ class ClientController extends Controller
             $em = $this->get('doctrine')->getManager();
             $em->flush($client);
 
-            return $this->redirect($this->get('router')->generate('didier_website_client_edit', ['id' => $id]));
+            $this->addFlash('success', sprintf('Client "%s" saved', $client->getName()));
+
+            return $this->redirect($this->get('router')->generate('didier_website_client_show', ['id' => $id]));
         }
 
         return $this->render('DidierWebsiteBundle:Client:edit.html.twig', array(
@@ -137,7 +157,13 @@ class ClientController extends Controller
         } catch (\Exception $e) {
             $this->get('session')->getFlashBag()->add('error', sprintf('%s', $e->getMessage()));
 
-            return $this->redirect($router->generate('didier_website_client_edit', ['id' => $id]));
+            $this->addFlash('error', sprintf('Unable to generate access token for client "%s"', $client->getName()));
+            $client->removeRedirectUri($router->generate('didier_website_client_generate_token', [
+                'id' => $client->getId(),
+            ], true));
+            $doctrine->getManager()->flush($client);
+
+            return $this->redirect($router->generate('didier_website_client_show', ['id' => $id]));
         }
 
         $redirectUris = $client->getRedirectUris();
@@ -145,57 +171,8 @@ class ClientController extends Controller
         $client->setRedirectUris($redirectUris);
         $doctrine->getManager()->flush($client);
 
+        $this->addFlash('success', sprintf('Access token for client "%s" generated', $client->getName()));
+
         return $this->redirect($router->generate('didier_website_access_token_list'));
-    }
-
-    public function loginAction(Request $request)
-    {
-        $session = $request->getSession();
-
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } elseif (null !== $session && $session->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
-        } else {
-            $error = '';
-        }
-
-        if ($error) {
-            $error = $error->getMessage(); // WARNING! Symfony source code identifies this line as a potential security threat.
-        }
-
-        $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
-
-        return $this->render('DidierWebsiteBundle:Security:login.html.twig', array(
-            'last_username' => $lastUsername,
-            'error'         => $error,
-        ));
-    }
-
-    public function loginCheckAction(Request $request)
-    {
-        throw $this->createNotFoundException();
-    }
-
-    public function revokeAction(Request $request)
-    {
-        $token = $request->query->get('token');
-        if (null === $token) {
-            throw $this->createAccessDeniedException('No token found in the request query parameters');
-        }
-
-        $doctrine = $this->get('doctrine');
-        $accessToken = $doctrine->getRepository('DidierOAuth2ServerBundle:AccessToken')->findOneByToken($token);
-
-        if (null === $accessToken) {
-            throw $this->createNotFoundException('Token not found');
-        }
-
-        $em = $doctrine->getManager();
-        $em->remove($accessToken);
-        $em->flush($accessToken);
-
-        return new JsonResponse(array('ok'));
     }
 }

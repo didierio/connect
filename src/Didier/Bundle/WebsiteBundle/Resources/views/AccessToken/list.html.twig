@@ -1,50 +1,34 @@
-{% extends '::backoffice.html.twig' %}
-
-{% block title 'Access tokens' %}
+{% extends '@DidierWebsite/AccessToken/layout.html.twig' %}
 
 {% block content %}
-  <div class="mdl-cell mdl-cell--14-col">
-
-
-  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>client</th>
-        <th>user</th>
-        <th>token</th>
-        <th>expiresAt</th>
-        <th>expired?</th>
-        <th>scope</th>
-        <th>actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for accessToken in accessTokens %}
-        <tr>
-            <td>{{ accessToken.id }}</td>
-            <td>{{ accessToken.client.name }} (#{{ accessToken.client.id }})</td>
-            <td>{{ accessToken.user }} (#{{ accessToken.user.id }})</td>
-            <td>{{ accessToken.token }}</td>
-            <td>{{ accessToken.expiresAt }}</td>
-            <td>{{ now.format('U') > accessToken.expiresAt ? 'yes' : 'no' }}
-            <td>{{ accessToken.scope }}</td>
-            <td>
-                <a href="{{ path('didier_website_access_token_edit', {
-                    id: accessToken.id
-                }) }}"/>
-                    edit
-                </a>
-                <a href="{{ path('didier_website_access_token_revoke', {
-                    id: accessToken.id
-                }) }}"/>
-                    revoke
-                </a>
-            </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-
+    <div class="mdl-cell mdl-cell--12-col">
+        <table class="mdl-data-table mdl-shadow--2dp">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>client</th>
+                    <th>user</th>
+                    <th>token</th>
+                    <th>expiresAt</th>
+                    <th>expired?</th>
+                    <th>scope</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for accessToken in accessTokens %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('didier_website_access_token_show', {id: accessToken.id}) }}">{{ accessToken.id }}</a>
+                        </td>
+                        <td><a href="{{ path('didier_website_client_show', {id: accessToken.client.id}) }}">{{ accessToken.client.name }}</a></td>
+                        <td>{{ accessToken.user }} (#{{ accessToken.user.id }})</td>
+                        <td>{{ accessToken.token }}</td>
+                        <td>{{ accessToken.expiresAt is not null ? accessToken.expiresAt|date : '' }}</td>
+                        <td>{{ now.format('U') > accessToken.expiresAt ? 'yes' : 'no' }}</td>
+                        <td>{{ accessToken.scope }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

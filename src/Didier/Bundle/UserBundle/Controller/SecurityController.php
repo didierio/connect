@@ -3,6 +3,7 @@
 namespace Didier\Bundle\UserBundle\Controller;
 
 use Didier\Bundle\UserBundle\Entity\User;
+use Didier\Bundle\UserBundle\Form\Type\ProfilePasswordType;
 use Didier\Bundle\UserBundle\Form\Type\ProfileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -52,11 +53,9 @@ class SecurityController extends Controller
         $form = $this->createForm(new ProfileType(), $user);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $encoder = $this->container->get('security.password_encoder');
-            $password = $encoder->encodePassword($user, $form->get('password')->getData());
-            $user->setPassword($password);
-
             $em->flush($user);
+
+            $this->addFlash('success', 'Profile saved');
 
             return $this->redirect($this->get('router')->generate('didier_user_security_profile'));
         }
@@ -65,6 +64,35 @@ class SecurityController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+    /**
+     * @Route("/profile/password", name="didier_user_security_profile_password")
+     */
+    public function profilePasswordAction(Request $request)
+    {
+        $em = $this->get('doctrine')->getManager();
+        $user = $em->getRepository('Didier\Bundle\UserBundle\Entity\User')->find($this->getUser()->getId());
+
+        $form = $this->createForm(new ProfilePasswordType(), $user);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $encoder = $this->container->get('security.password_encoder');
+            $password = $encoder->encodePassword($user, $form->get('password')->getData());
+            $user->setPassword($password);
+
+            $em->flush($user);
+
+            $this->addFlash('success', 'Password changed');
+
+            return $this->redirect($this->get('router')->generate('didier_user_security_profile_password'));
+        }
+
+        return $this->render('DidierUserBundle:Security:profile_password.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+
     /**
      * @Route("/login", name="didier_user_security_login")
      */

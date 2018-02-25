@@ -24,6 +24,24 @@ class AccessTokenController extends Controller
     }
 
     /**
+     * @Route("/access-tokens/{id}", name="didier_website_access_token_show")
+     */
+    public function showAction(Request $request, $id)
+    {
+        $manager = $this->get('fos_oauth_server.access_token_manager.default');
+        $accessToken = $manager->findTokenBy(['id' => $id]);
+
+        if (null === $accessToken) {
+            throw $this->createNotFoundException(sprintf('AccessToken #%d not found', $id));
+        }
+
+        return $this->render('DidierWebsiteBundle:AccessToken:show.html.twig', array(
+            'accessToken' => $accessToken,
+            'now' => new \DateTime(),
+        ));
+    }
+
+    /**
      * @Route("/access-tokens/{id}/edit", name="didier_website_access_token_edit")
      */
     public function editAction(Request $request, $id)
@@ -40,7 +58,7 @@ class AccessTokenController extends Controller
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $manager->updateToken($accessToken);
 
-            return $this->redirect($this->get('router')->generate('didier_website_access_token_list'));
+            return $this->redirect($this->get('router')->generate('didier_website_access_token_show', ['id' => $accessToken->getId()]));
         }
 
         return $this->render('DidierWebsiteBundle:AccessToken:edit.html.twig', array(

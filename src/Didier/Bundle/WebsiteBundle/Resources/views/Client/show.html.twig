@@ -1,0 +1,51 @@
+{% extends '@DidierWebsite/Client/layout.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+    <span class="mdl-color-text--grey-300">/</span>
+    {{ client.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="mdl-cell mdl-cell--12-col">
+        <table class="mdl-data-table mdl-shadow--2dp">
+            <tbody>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">#</td>
+                    <td>{{ client.id }}</td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Name</td>
+                    <td>{{ client.name }}</td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Id</td>
+                    <td>{{ client.randomId }}</td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Secret</td>
+                    <td>{{ client.secret }}</td>
+                </tr>
+                {% for redirectUri in client.redirectUris %}
+                    <tr>
+                        <td class="mdl-data-table__cell--non-numeric">Redirect Uri</td>
+                        <td>{{ redirectUri }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Grants</td>
+                    <td>{{ client.allowedGrantTypes|join(', ') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mdl-button--floating-action">
+        <a href="{{ path('didier_website_client_create_token', {id: client.id}) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+            <i class="material-icons">control_point_duplicate</i>
+        </a>
+        <a href="{{ path('didier_website_client_edit', {id: client.id}) }}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+            <i class="material-icons">edit</i>
+        </a>
+    </div>
+{% endblock %}

@@ -1,17 +1,24 @@
-{% extends '::backoffice.html.twig' %}
+{% extends '@DidierWebsite/Client/layout.html.twig' %}
 
 {% form_theme form 'form/backoffice_layout.html.twig' %}
 
-{% block title "Create client" %}
+{% block title %}
+    {{ parent() }}
+    <span class="mdl-color-text--grey-300">/</span>
+    Create
+{% endblock %}
 
 {% block content %}
-  <div class="demo-cards mdl-cell mdl-cell--12-col mdl-shadow--2dp">
-    <div class="mdl-card__title mdl-card--expand mdl-color--white">
-        <form action="{{ path('didier_website_client_create') }}" method="POST">
-                {{ form_rest(form) }}
+    <div class="mdl-cell mdl-cell--12-col">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title mdl-card--expand mdl-color--white">
+                <form action="{{ path('didier_website_client_create') }}" method="POST">
+                    {{ form_rest(form) }}
 
-            <input type="submit" id="_submit" name="_submit" class="mdl-button mdl-js-button mdl-js-ripple-effect" value="Create" />
-        </form>
-    </div>
+                    <input type="submit" id="_submit" name="_submit" class="mdl-button mdl-js-button mdl-js-ripple-effect" value="Save" />
+                    <a href="{{ path('didier_website_client_list') }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">Cancel</a>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

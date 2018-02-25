@@ -6,19 +6,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProfileType extends AbstractType
+class ProfilePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email')
-            ->add('username', 'text')
+            ->add('password', 'repeated', array(
+                'type' => 'password',
+                'mapped' => false,
+            ))
         ;
     }
 
     public function getName()
     {
-        return 'profile';
+        return 'profile_password';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

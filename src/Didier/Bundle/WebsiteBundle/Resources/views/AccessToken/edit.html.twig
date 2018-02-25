@@ -1,18 +1,24 @@
-{% extends '::base.html.twig' %}
+{% extends '@DidierWebsite/AccessToken/layout.html.twig' %}
 
-{% block body %}
-    <h1>
-        Edit access token #{{ accessToken.id }}
-    </h1>
+{% form_theme form 'form/backoffice_layout.html.twig' %}
 
-    <div class="form">
-        <form class="vertical" action="{{ path('didier_website_access_token_edit', {id: accessToken.id}) }}" method="POST">
-            {{ form_rest(form) }}
+{% block title %}
+    {{ parent() }}
+    <span class="mdl-color-text--grey-300">/</span>
+    {{ accessToken.token }}
+{% endblock %}
 
-            <div class="form_button">
-                <input type="submit" id="_submit" name="_submit" value="Create" />
+{% block content %}
+    <div class="mdl-cell mdl-cell--12-col">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title mdl-card--expand mdl-color--white">
+                <form action="{{ path('didier_website_access_token_edit', {id: accessToken.id}) }}" method="POST">
+                    {{ form_rest(form) }}
+
+                    <input type="submit" id="_submit" name="_submit" class="mdl-button mdl-js-button mdl-js-ripple-effect" value="Save" />
+                    <a href="{{ path('didier_website_access_token_show', {id: accessToken.id}) }}" class="mdl-button mdl-js-button mdl-js-ripple-effect">Cancel</a>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
-    <a href="{{ path('didier_website_access_token_list') }}">Back to list</a>
 {% endblock %}
