@@ -7,7 +7,19 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% include "::notifications.html.twig" %}
+        {% set flashes = app.session.flashbag.all %}
+
+        {% if  flashes | length > 0 %}
+            <div class="flash-messages">
+            {% for type, messages in flashes %}
+                {% for message in messages %}
+                    <p class="alert alert-{{ type }}">
+                        {{ message | raw }}
+                    </p>
+                {% endfor %}
+            {% endfor %}
+            </div>
+        {% endif %}
 
         {% block body %}{% endblock %}
 

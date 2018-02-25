@@ -146,4 +146,9 @@ class User implements UserInterface
     public function eraseCredentials()
     {
     }
+
+    public function getGravatar()
+    {
+        return md5($this->email);
+    }
 }

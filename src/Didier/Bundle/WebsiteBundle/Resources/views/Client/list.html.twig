@@ -1,33 +1,42 @@
-{% extends '::base.html.twig' %}
-{% block body %}
-    <h1>Clients</h1>
+{% extends '::backoffice.html.twig' %}
 
-    <table border="1">
-        <thead>
-            <tr>
-                <td>#</td>
-                <td>name</td>
-                <td>id</td>
-                <td>secret</td>
-                <td>redirectUris</td>
-                <td>allowedGrantTypes</td>
-            </tr>
-        </thead>
-        {% for client in clients %}
-            <tbody>
-                <tr>
-                    <td>
-                        <a href="{{ path('didier_website_client_edit', {id: client.id}) }}">{{ client.id }}</a>
-                    </td>
-                    <td>{{ client.name }}</td>
-                    <td>{{ client.randomId }}</td>
-                    <td>{{ client.secret }}</td>
-                    <td>{{ client.redirectUris|join(', ') }}</td>
-                    <td>{{ client.allowedGrantTypes|join(', ') }}</td>
-                </tr>
-            </tbody>
-        {% endfor %}
-    </table>
-    <a href="{{ path('didier_website_client_create') }}">Create</a>
-    <a href="{{ path('didier_website_home') }}">Home</a>
+{% block title 'Clients' %}
+
+{% block content %}
+  <div class="demo-cards mdl-cell mdl-cell--14-col mdl-shadow--2dp">
+
+
+  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>name</th>
+        <th>id</th>
+        <th>secret</th>
+        <th>redirectUris</th>
+        <th>allowedGrantTypes</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for client in clients %}
+        <tr>
+            <td>
+                <a href="{{ path('didier_website_client_edit', {id: client.id}) }}">{{ client.id }}</a>
+            </td>
+            <td>{{ client.name }}</td>
+            <td>{{ client.randomId }}</td>
+            <td>{{ client.secret }}</td>
+            <td>{{ client.redirectUris|join(', ') }}</td>
+            <td>{{ client.allowedGrantTypes|join(', ') }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<a href="{{ path('didier_website_client_create') }}" class="mdl-button mdl-button--floating-action mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+  <i class="material-icons">add</i>
+</a>
+
+
 {% endblock %}
